@@ -9,6 +9,7 @@
     <version>1.0-SNAPSHOT</version>
 
     <modules>
+        <module>coordinator</module>
         <module>rocksdb-module</module>
     </modules>
     <packaging>pom</packaging>
@@ -25,6 +26,8 @@
         <maven.shade.version>3.1.1</maven.shade.version>
         <rocksdb.version>6.15.5</rocksdb.version>
         <lombok.version>1.18.18</lombok.version>
+        <helix.version>1.0.1</helix.version>
+        <commons.jci.version>1.0</commons.jci.version>
     </properties>
 
     <dependencyManagement>
@@ -48,6 +51,16 @@
                 <groupId>org.rocksdb</groupId>
                 <artifactId>rocksdbjni</artifactId>
                 <version>${rocksdb.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.helix</groupId>
+                <artifactId>helix-core</artifactId>
+                <version>${helix.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-jci-fam</artifactId>
+                <version>${commons.jci.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
