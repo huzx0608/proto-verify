@@ -14,12 +14,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.helix</groupId>
-            <artifactId>helix-core</artifactId>
+            <groupId>com.zetyun.rt</groupId>
+            <artifactId>state-models</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>

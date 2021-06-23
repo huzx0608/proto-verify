@@ -1,6 +1,7 @@
-package com.zetyun.rt.coodinator.watcher;
+package com.zetyun.rt.models;
 
 
+import com.zetyun.rt.models.ChangeRecord;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;

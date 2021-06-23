@@ -1,6 +1,8 @@
-package com.zetyun.rt.coodinator.watcher;
+package com.zetyun.rt.watcher;
 
-import com.zetyun.rt.coodinator.RsyncInvoker;
+import com.zetyun.rt.models.ChangeRecord;
+import com.zetyun.rt.models.CheckpointFile;
+import com.zetyun.rt.models.RsyncInvoker;
 
 import java.util.List;
 import java.util.Set;

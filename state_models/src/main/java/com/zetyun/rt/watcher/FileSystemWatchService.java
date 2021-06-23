@@ -1,4 +1,4 @@
-package com.zetyun.rt.coodinator.watcher;
+package com.zetyun.rt.watcher;
 
 import org.apache.commons.jci.listeners.AbstractFilesystemAlterationListener;
 import org.apache.commons.jci.monitor.FilesystemAlterationMonitor;

@@ -1,4 +1,4 @@
-package com.zetyun.rt.coodinator.watcher;
+package com.zetyun.rt.watcher;
 
 public interface FileChangeWatcher {
   void onEntryModified(String path);
@@ -6,5 +6,4 @@ public interface FileChangeWatcher {
   void onEntryAdded(String path);
 
   void onEntryDeleted(String path);
-
 }

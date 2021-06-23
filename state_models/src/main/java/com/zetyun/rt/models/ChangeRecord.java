@@ -1,4 +1,4 @@
-package com.zetyun.rt.coodinator.watcher;
+package com.zetyun.rt.models;
 
 import lombok.Getter;
 import lombok.Setter;

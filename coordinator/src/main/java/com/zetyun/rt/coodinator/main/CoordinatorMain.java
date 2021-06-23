@@ -3,7 +3,7 @@ package com.zetyun.rt.coodinator.main;
 import org.apache.helix.HelixManager;
 import org.apache.helix.controller.HelixControllerMain;
 
-import static com.zetyun.rt.coodinator.config.ClusterCfgConst.DEFAULT_CLUSTER_NAME;
+import static com.zetyun.rt.config.ClusterCfgConst.DEFAULT_CLUSTER_NAME;
 
 public class CoordinatorMain {
   public static void main(String[] args) {

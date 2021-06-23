@@ -1,4 +1,4 @@
-package com.zetyun.rt.coodinator;
+package com.zetyun.rt.models;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

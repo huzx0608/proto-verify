@@ -9,7 +9,9 @@
     <version>1.0-SNAPSHOT</version>
 
     <modules>
+        <module>state_models</module>
         <module>coordinator</module>
+        <module>executor</module>
         <module>rocksdb-module</module>
     </modules>
     <packaging>pom</packaging>

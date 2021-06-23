@@ -1,4 +1,4 @@
-package com.zetyun.rt.coodinator.models;
+package com.zetyun.rt.models;
 
 
 import org.apache.helix.HelixManager;

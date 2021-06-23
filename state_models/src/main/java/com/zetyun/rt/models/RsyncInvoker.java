@@ -1,4 +1,4 @@
-package com.zetyun.rt.coodinator;
+package com.zetyun.rt.models;
 
 
 import java.io.IOException;

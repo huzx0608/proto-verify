@@ -1,4 +1,4 @@
-package com.zetyun.rt.coodinator.watcher;
+package com.zetyun.rt.watcher;
 
 public class ChangeLog {
   public ChangeLog(String logDir) {

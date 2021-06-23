@@ -8,12 +8,10 @@ import org.apache.helix.model.StateModelDefinition;
 import org.apache.helix.tools.StateModelConfigGenerator;
 import org.apache.helix.zookeeper.impl.client.ZkClient;
 
-import static com.zetyun.rt.coodinator.config.ClusterCfgConst.DEFAULT_CLUSTER_NAME;
-import static com.zetyun.rt.coodinator.config.ClusterCfgConst.DEFAULT_RESOURCE_NAME;
+import static com.zetyun.rt.config.ClusterCfgConst.*;
 
 public class SetupCluster {
   public static final int DEFAULT_PARTITION_NUMBER = 1;
-  public static final String DEFAULT_STATE_MODEL = "MasterSlave";
 
   public static void main(String[] args) {
     if (args.length < 2) {

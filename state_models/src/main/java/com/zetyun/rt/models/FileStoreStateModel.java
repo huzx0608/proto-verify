@@ -1,11 +1,8 @@
-package com.zetyun.rt.coodinator.models;
+package com.zetyun.rt.models;
 
+import com.zetyun.rt.watcher.ChangeLogGenerator;
+import com.zetyun.rt.watcher.FileSystemWatchService;
 
-import com.zetyun.rt.coodinator.watcher.ChangeLogGenerator;
-import com.zetyun.rt.coodinator.watcher.ChangeRecord;
-import com.zetyun.rt.coodinator.watcher.CheckpointFile;
-import com.zetyun.rt.coodinator.Replicator;
-import com.zetyun.rt.coodinator.watcher.FileSystemWatchService;
 import org.apache.helix.AccessOption;
 import org.apache.helix.HelixManager;
 import org.apache.helix.NotificationContext;
