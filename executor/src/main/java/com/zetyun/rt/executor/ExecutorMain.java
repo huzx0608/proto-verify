@@ -1,7 +1,7 @@
 package com.zetyun.rt.executor;
 
 import com.zetyun.rt.config.ClusterCfgConst;
-import com.zetyun.rt.models.FileStoreStateModelFactory;
+import com.zetyun.rt.executor.models.FileStoreStateModelFactory;
 import org.apache.commons.io.FileUtils;
 import org.apache.helix.HelixAdmin;
 import org.apache.helix.HelixManager;

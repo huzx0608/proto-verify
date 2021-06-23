@@ -1,4 +1,4 @@
-package com.zetyun.rt.watcher;
+package com.zetyun.rt.executor.models;
 
 public interface FileChangeWatcher {
   void onEntryModified(String path);

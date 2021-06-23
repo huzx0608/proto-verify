@@ -8,22 +8,14 @@
         <artifactId>RealtimeDB</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>state-models</artifactId>
+    <artifactId>common</artifactId>
     <modelVersion>4.0.0</modelVersion>
-    <name>StateModels - State models of FAM</name>
+    <name>Common - The Common Defininition</name>
 
     <dependencies>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.helix</groupId>
-            <artifactId>helix-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-jci-fam</artifactId>
         </dependency>
     </dependencies>
     <build>

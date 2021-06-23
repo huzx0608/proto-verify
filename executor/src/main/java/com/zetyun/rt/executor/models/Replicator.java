@@ -1,8 +1,5 @@
-package com.zetyun.rt.models;
+package com.zetyun.rt.executor.models;
 
-import com.zetyun.rt.watcher.FileSystemWatchService;
-import com.zetyun.rt.watcher.ChangeLogProcessor;
-import com.zetyun.rt.watcher.ChangeLogReader;
 import org.apache.helix.NotificationContext;
 import org.apache.helix.model.ExternalView;
 import org.apache.helix.model.InstanceConfig;

@@ -9,7 +9,7 @@
     <version>1.0-SNAPSHOT</version>
 
     <modules>
-        <module>state_models</module>
+        <module>common</module>
         <module>coordinator</module>
         <module>executor</module>
         <module>rocksdb-module</module>
@@ -63,6 +63,16 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-jci-fam</artifactId>
                 <version>${commons.jci.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>1.7.25</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-log4j12</artifactId>
+                <version>1.7.14</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

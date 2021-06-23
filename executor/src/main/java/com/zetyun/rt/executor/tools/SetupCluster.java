@@ -1,4 +1,4 @@
-package com.zetyun.rt.coodinator.tools;
+package com.zetyun.rt.executor.tools;
 
 import org.apache.helix.manager.zk.ZKHelixAdmin;
 import org.apache.helix.manager.zk.ZNRecordSerializer;

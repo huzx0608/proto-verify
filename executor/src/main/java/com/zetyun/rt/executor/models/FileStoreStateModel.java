@@ -1,7 +1,4 @@
-package com.zetyun.rt.models;
-
-import com.zetyun.rt.watcher.ChangeLogGenerator;
-import com.zetyun.rt.watcher.FileSystemWatchService;
+package com.zetyun.rt.executor.models;
 
 import org.apache.helix.AccessOption;
 import org.apache.helix.HelixManager;
