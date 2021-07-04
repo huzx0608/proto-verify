@@ -19,7 +19,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <log4j.version>2.12.1</log4j.version>
+        <sl4j.api.verion>1.7.25</sl4j.api.verion>
+        <sl4j.log4j12.verion>1.7.30</sl4j.log4j12.verion>
         <junit.version>4.12</junit.version>
         <maven.version>3.3</maven.version>
         <maven.plugin.version>3.5.2</maven.plugin.version>
@@ -65,15 +66,21 @@
                 <artifactId>commons-jci-fam</artifactId>
                 <version>${commons.jci.version}</version>
             </dependency>
+            <!-- log4j2 related dependencies -->
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
-                <version>1.7.25</version>
+                <version>${sl4j.api.verion}</version>
             </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-log4j12</artifactId>
-                <version>1.7.14</version>
+                <version>${sl4j.log4j12.verion}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.lmax</groupId>
+                <artifactId>disruptor</artifactId>
+                <version>3.3.4</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -87,7 +94,6 @@
                 </excludes>
             </resource>
         </resources>
-
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

@@ -26,6 +26,14 @@
             <artifactId>libthrift</artifactId>
             <version>0.14.1</version>
         </dependency>
+       <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -88,7 +96,7 @@
                             </filters>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.zetyun.rt.rocksdb.RocksdbBasicOper</mainClass>
+                                    <mainClass>com.zetyun.rt.Main</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
