@@ -2,7 +2,6 @@ package com.zetyun.rt.replicator;
 
 import com.zetyun.rt.network.Client;
 import com.zetyun.rt.network.Server;
-import com.zetyun.rt.replicator.Update;
 import com.zetyun.rt.utils.AddressUtils;
 import com.zetyun.rt.utils.BytesUtils;
 import lombok.Getter;
@@ -10,8 +9,6 @@ import lombok.Setter;
 import org.rocksdb.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.concurrent.Executor;
 
 @Getter
 @Setter
@@ -76,7 +73,7 @@ public class ReplicatedDB {
     // enabled, and no slave gets back to us in time. In this case, the update
     // is guaranteed to be committed to Master. Slaves may or may not have got
     // the update.
-    public Long write(WriteOptions writeOpt, WriteBatch batch) {
+    public Long write(WriteBatch batch) {
         //
         /**
          * 1. check the role of db(must be master).
@@ -94,8 +91,9 @@ public class ReplicatedDB {
             Long currentMs = System.currentTimeMillis();
             byte[] currentMSBytes = BytesUtils.longToBytes(currentMs);
             batch.putLogData(currentMSBytes);
-            dbInstance.write(writeOpt, batch);
-            dbInstance.flush(new FlushOptions());
+            dbInstance.write(this.writeOptions, batch);
+            // todo
+            // dbInstance.flush(new FlushOptions());
 
             /**
              * 3. get the latest sequence number and return.
@@ -147,7 +145,8 @@ public class ReplicatedDB {
                 WriteBatch writeBatch = new WriteBatch(update.getRawData());
                 writeBatch.putLogData(BytesUtils.longToBytes(updateTimeStamp));
                 dbInstance.write(writeOptions, writeBatch);
-                dbInstance.flush(new FlushOptions());
+                // todo
+                // dbInstance.flush(new FlushOptions());
             }
             if (defaultDelayInterval > 100) {
                 Thread.sleep(defaultDelayInterval);
@@ -168,15 +167,5 @@ public class ReplicatedDB {
      * Reset the upstream IP after querying for latest leader from helix.
      */
     public void resetUpStream() {
-    }
-
-    public com.zetyun.rt.replicator.ReplicateRsp handelReplicator(com.zetyun.rt.replicator.ReplicateReq req) {
-        /**
-         * 1. parse the replicate request
-         * 2. call Rocksdb::GetUpdateSince to get data
-         *   2.1 rethink whether exist a cache map to accelerator the cache map
-         * 3. construct the response and return
-         */
-        return null;
     }
 }

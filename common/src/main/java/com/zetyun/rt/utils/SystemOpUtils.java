@@ -1,11 +1,14 @@
 package com.zetyun.rt.utils;
 
+import org.rocksdb.Options;
 import org.rocksdb.RocksDB;
 import org.rocksdb.RocksDBException;
+import sun.jvm.hotspot.debugger.win32.coff.OptionalHeaderStandardFields;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Optional;
 
 public class SystemOpUtils {
 
@@ -26,6 +29,9 @@ public class SystemOpUtils {
     public static RocksDB cleanUpOpenDB(final String dbPath) throws RocksDBException {
         SystemOpUtils.runCommand("rm -rf " + dbPath);
         SystemOpUtils.runCommand("mkdir -p " + dbPath);
+        Options options = new Options().setCreateIfMissing(true);
+        options.setWalTtlSeconds(300);
+        options.setWalSizeLimitMB(100);
         RocksDB rocksDB = RocksDB.open(dbPath);
         return rocksDB;
     }

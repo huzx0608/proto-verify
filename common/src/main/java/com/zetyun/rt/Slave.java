@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 public class Slave {
     final static Logger logger = LoggerFactory.getLogger(Slave.class);
     public static void main(String[] argv) throws RocksDBException, InterruptedException {
-        RocksDB slaveDB = SystemOpUtils.cleanUpOpenDB("/tmp/db_slave");
+        RocksDB slaveDB = SystemOpUtils.cleanUpOpenDB("/Users/sqt/db/db_slave");
         RocksdbReplicator replicator = RocksdbReplicator.getInstance();
         String dbName = "db";
         replicator.addDB(dbName, slaveDB, DBRole.SLAVE, "localhost:9001");

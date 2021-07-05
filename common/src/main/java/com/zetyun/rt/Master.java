@@ -12,19 +12,20 @@ import org.slf4j.LoggerFactory;
 public class Master{
     final static Logger logger = LoggerFactory.getLogger(Master.class);
     public static void main(String[] argv) throws RocksDBException, InterruptedException {
-        RocksDB masterDb = SystemOpUtils.cleanUpOpenDB("/tmp/db_master");
+        RocksDB masterDb = SystemOpUtils.cleanUpOpenDB("/Users/sqt/db/db_master");
         RocksdbReplicator replicator = RocksdbReplicator.getInstance();
         String dbName = "db";
         Server serverNode = new Server(9001);
         serverNode.start();
         replicator.addDB(dbName, masterDb, DBRole.MASTER, "");
         ReplicatedDB masterReplicatorDB = replicator.getReplicateDB(dbName);
-        for (int j = 0; j < 10; j++) {
+        for (int j = 0; j < 10000; j++) {
             WriteBatch batch = new WriteBatch();
             for (Integer i = 0; i < 3000; i++) {
-                batch.put(i.toString().getBytes(), i.toString().getBytes());
+                String key = String.format("%030d", i);
+                batch.put(key.getBytes(), key.getBytes());
             }
-            masterReplicatorDB.write(new WriteOptions(), batch);
+            masterReplicatorDB.write(batch);
         }
         serverNode.join();
     }

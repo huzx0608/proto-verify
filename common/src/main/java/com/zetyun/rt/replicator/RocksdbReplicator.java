@@ -75,9 +75,7 @@ public class RocksdbReplicator {
         return ReturnCode.OK;
     }
 
-    public Long write(final String dbName,
-                      final WriteOptions options,
-                      WriteBatch batch) {
+    public Long write(final String dbName, WriteBatch batch) {
         /**
          * call replicator db to write the batch, and return the latest sequence No.
          */
@@ -86,7 +84,7 @@ public class RocksdbReplicator {
             logger.error("Receive Write Request, but db:{} Not Exist", dbName);
             return -1L;
         }
-        return replicatedDB.write(options, batch);
+        return replicatedDB.write(batch);
     }
 
     public ReplicatedDB getReplicateDB(String dbName) {
