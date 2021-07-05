@@ -44,7 +44,6 @@ public class RocksdbReplicator {
         ReplicatedDB replicatedDB = new ReplicatedDB(
                 dbName,
                 dbInstance,
-                null,
                 dbRole,
                 upStreamAddr,
                 writeOptions

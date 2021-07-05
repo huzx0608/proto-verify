@@ -2,7 +2,6 @@ package com.zetyun.rt.network;
 
 import com.zetyun.rt.replicator.Replicator;
 import com.zetyun.rt.replicator.ReplicatorHandler;
-import com.zetyun.rt.replicator.RocksdbReplicator;
 import org.apache.thrift.TProcessor;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.server.TServer;

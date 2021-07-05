@@ -24,6 +24,7 @@ public class ReplicatorHandler implements com.zetyun.rt.replicator.Replicator.If
         int i = 0;
         int localRecordCnt = 0;
         int localRecordSize = 0;
+        // todo check last sequence number of request is bigger than current db
         try {
             TransactionLogIterator iter = replicatedDB.getDbInstance().getUpdatesSince(lastReplicateSeqNo);
             for (i = 0;

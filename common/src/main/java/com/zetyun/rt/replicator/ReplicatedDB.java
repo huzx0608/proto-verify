@@ -7,10 +7,7 @@ import com.zetyun.rt.utils.AddressUtils;
 import com.zetyun.rt.utils.BytesUtils;
 import lombok.Getter;
 import lombok.Setter;
-import org.rocksdb.RocksDB;
-import org.rocksdb.RocksDBException;
-import org.rocksdb.WriteBatch;
-import org.rocksdb.WriteOptions;
+import org.rocksdb.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,7 +26,6 @@ public class ReplicatedDB {
     private DBRole  dbRole;
     private String  upStreamIp;
     private int     upStreamPort;
-    private Executor executorPool;
     private WriteOptions writeOptions;
     private Client thriftClient;
     private Server thriftServer;
@@ -37,21 +33,19 @@ public class ReplicatedDB {
 
     public ReplicatedDB(final String dbName,
                         RocksDB  dbInstance,
-                        Executor executor,
                         DBRole   dbRole,
                         final String upStreamAddr,
                         WriteOptions writeOptions) {
         this.dbName = dbName;
         this.dbInstance = dbInstance;
-        this.executorPool = executor;
         this.dbRole = dbRole;
-        AddressUtils address = new AddressUtils(upStreamAddr);
-        this.upStreamIp = address.getAddress();
-        this.upStreamPort = address.getPort();
         this.writeOptions = writeOptions;
         this.lastSeqNo = 0L;
         if (dbRole == DBRole.SLAVE) {
-            upStreamIp = "localhost";
+            AddressUtils address = new AddressUtils(upStreamAddr);
+            this.upStreamIp = address.getAddress();
+            this.upStreamPort = address.getPort();
+            this.upStreamIp = "localhost";
             this.thriftClient = new Client(upStreamIp, upStreamPort);
         } else {
             this.thriftServer = new Server(upStreamPort);
@@ -101,6 +95,7 @@ public class ReplicatedDB {
             byte[] currentMSBytes = BytesUtils.longToBytes(currentMs);
             batch.putLogData(currentMSBytes);
             dbInstance.write(writeOpt, batch);
+            dbInstance.flush(new FlushOptions());
 
             /**
              * 3. get the latest sequence number and return.
@@ -147,12 +142,13 @@ public class ReplicatedDB {
         Long updateTimeStamp = 0L;
         try {
             for (Update update : response.getUpdates()) {
+                System.out.println("===> Receive response with updates:" + update.getTimestamp());
                 updateTimeStamp = update.getTimestamp();
                 WriteBatch writeBatch = new WriteBatch(update.getRawData());
                 writeBatch.putLogData(BytesUtils.longToBytes(updateTimeStamp));
                 dbInstance.write(writeOptions, writeBatch);
+                dbInstance.flush(new FlushOptions());
             }
-
             if (defaultDelayInterval > 100) {
                 Thread.sleep(defaultDelayInterval);
             }
