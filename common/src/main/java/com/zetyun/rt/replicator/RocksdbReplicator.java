@@ -1,5 +1,6 @@
 package com.zetyun.rt.replicator;
 
+import org.apache.thrift.TException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.rocksdb.RocksDB;
@@ -77,7 +78,7 @@ public class RocksdbReplicator {
 
     public Long write(final String dbName,
                       final WriteOptions options,
-                      WriteBatch        batch) {
+                      WriteBatch batch) {
         /**
          * call replicator db to write the batch, and return the latest sequence No.
          */
@@ -87,5 +88,9 @@ public class RocksdbReplicator {
             return -1L;
         }
         return replicatedDB.write(options, batch);
+    }
+
+    public ReplicatedDB getReplicateDB(String dbName) {
+        return this.replicatedDBMap.get(dbName);
     }
 }

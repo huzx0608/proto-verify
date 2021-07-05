@@ -1,25 +1,39 @@
 package com.zetyun.rt.replicator;
 
-import lombok.AllArgsConstructor;
+import com.zetyun.rt.network.Client;
+import com.zetyun.rt.network.Server;
+import com.zetyun.rt.replicator.Update;
+import com.zetyun.rt.utils.AddressUtils;
+import com.zetyun.rt.utils.BytesUtils;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.rocksdb.Options;
 import org.rocksdb.RocksDB;
+import org.rocksdb.RocksDBException;
 import org.rocksdb.WriteBatch;
 import org.rocksdb.WriteOptions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.Executor;
 
 @Getter
 @Setter
 public class ReplicatedDB {
+    final static Logger logger = LoggerFactory.getLogger(ReplicatedDB.class);
+    private static Long defaultMaxWaitMs = 1000L;
+    private static int  defaultMaxUpdates = 100;
+    private static int  defaultDelayInterval = 100;
+
     private String  dbName;
     private RocksDB dbInstance;
     private DBRole  dbRole;
-    private String  upStreamAddr;
+    private String  upStreamIp;
+    private int     upStreamPort;
     private Executor executorPool;
     private WriteOptions writeOptions;
+    private Client thriftClient;
+    private Server thriftServer;
+    private Long   lastSeqNo;
 
     public ReplicatedDB(final String dbName,
                         RocksDB  dbInstance,
@@ -31,8 +45,32 @@ public class ReplicatedDB {
         this.dbInstance = dbInstance;
         this.executorPool = executor;
         this.dbRole = dbRole;
-        this.upStreamAddr = upStreamAddr;
+        AddressUtils address = new AddressUtils(upStreamAddr);
+        this.upStreamIp = address.getAddress();
+        this.upStreamPort = address.getPort();
         this.writeOptions = writeOptions;
+        this.lastSeqNo = 0L;
+        if (dbRole == DBRole.SLAVE) {
+            upStreamIp = "localhost";
+            this.thriftClient = new Client(upStreamIp, upStreamPort);
+        } else {
+            this.thriftServer = new Server(upStreamPort);
+        }
+        doInit();
+    }
+
+    private void doInit() {
+        try {
+            if (dbRole == DBRole.SLAVE) {
+                this.thriftClient.initConnection();
+            } else {
+                this.thriftServer.start();
+            }
+        } catch (Exception exp) {
+            logger.error("Init doInit DB with role:" + dbRole.toString()
+                    + " catch exception" + exp.toString(), exp);
+            exp.printStackTrace();
+        }
     }
 
     // Similar to rocksdb::DB::Write(). Only two differences:
@@ -50,29 +88,47 @@ public class ReplicatedDB {
          * 1. check the role of db(must be master).
          */
         if (dbRole == DBRole.SLAVE) {
+            logger.warn("Current Role is Slave, it cannot be written, dbName:{}", dbName);
+            return -1L;
         }
 
-        /**
-         * 2. append current timestamp to batch and write batch.
-         */
+        Long latestSeqNo = 0L;
+        try {
+            /**
+             * 2. append current timestamp to batch and write batch.
+             */
+            Long currentMs = System.currentTimeMillis();
+            byte[] currentMSBytes = BytesUtils.longToBytes(currentMs);
+            batch.putLogData(currentMSBytes);
+            dbInstance.write(writeOpt, batch);
 
-        /**
-         * 3. get the latest sequence number and return.
-         */
+            /**
+             * 3. get the latest sequence number and return.
+             */
+            latestSeqNo = dbInstance.getLatestSequenceNumber();
 
-        /**
-         * 4. check current replay mode, will block or continue
-         */
-
-        /**
-         * 5. add the write records to local cache
-         */
-        return 0L;
+            /**
+             * 4. check current replay mode, will block or continue
+             */
+            // todo
+            /**
+             * 5. add the write records to local cache
+             */
+            // todo
+        } catch (RocksDBException ex) {
+            logger.error("Persist data to rocksdb, catch exception:" + ex.toString(), ex);
+        }
+        return latestSeqNo;
     }
 
 
     public void pullFromUpStream() {
         // 1. check the role of db, must be slave
+        if (dbRole != DBRole.SLAVE) {
+            logger.warn("Current Role is master, but start pullFromUpStream Request");
+            return;
+        }
+
         /**
          * 2. construct the replication request and send request
          * 2.1 get current sequence number of db
@@ -80,6 +136,36 @@ public class ReplicatedDB {
          * 2.3 parse the response and get the data
          * 2.4 loop re pull from upstream
          */
+        com.zetyun.rt.replicator.ReplicateReq request = new com.zetyun.rt.replicator.ReplicateReq();
+        request.setDbName(dbName);
+        request.setSeqNo(dbInstance.getLatestSequenceNumber() + 1);
+        request.setMaxWaitMs(defaultMaxWaitMs);
+        request.setMaxUpdates(defaultMaxUpdates);
+
+        com.zetyun.rt.replicator.ReplicateRsp response = thriftClient.sendFetchRequest(request);
+
+        Long updateTimeStamp = 0L;
+        try {
+            for (Update update : response.getUpdates()) {
+                updateTimeStamp = update.getTimestamp();
+                WriteBatch writeBatch = new WriteBatch(update.getRawData());
+                writeBatch.putLogData(BytesUtils.longToBytes(updateTimeStamp));
+                dbInstance.write(writeOptions, writeBatch);
+            }
+
+            if (defaultDelayInterval > 100) {
+                Thread.sleep(defaultDelayInterval);
+            }
+            this.pullFromUpStream();
+        } catch (RocksDBException exp) {
+            exp.printStackTrace();
+            logger.error("WriteBatch: timeStamp:" + updateTimeStamp
+                    + ", catch Rocksdb Exception:" + exp.toString(), exp);
+        } catch (InterruptedException exp) {
+            exp.printStackTrace();
+            logger.error("WriteBatch: timeStamp:" + updateTimeStamp
+                    + ", catch Interrupt Exception:" + exp.toString(), exp);
+        }
     }
 
     /**
