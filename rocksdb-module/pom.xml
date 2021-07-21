@@ -17,12 +17,27 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.rocksdb</groupId>-->
+<!--            <artifactId>rocksdbjni</artifactId>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>org.rocksdb</groupId>
             <artifactId>rocksdbjni</artifactId>
+            <version>6.14.6</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/rocksdbjni-6.14.6-linux64.jar</systemPath>
         </dependency>
     </dependencies>
     <build>
+        <resources>
+            <resource>
+                <directory>${project.basedir}</directory>
+                <includes>
+                    <include>lib/*.jar</include>
+                </includes>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>

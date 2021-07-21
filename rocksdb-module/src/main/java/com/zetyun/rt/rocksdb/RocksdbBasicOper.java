@@ -27,9 +27,25 @@ public class RocksdbBasicOper {
                 Long currentTime = System.currentTimeMillis();
                 writeBatch.putLogData(currentTime.toString().getBytes());
                 rocksDB.write(new WriteOptions(), writeBatch);
+                System.out.println("Current Latest SequenceNo is:" + rocksDB.getLatestSequenceNumber());
+
+                /**
+                 * other metadata operation.
+                 */
+                System.out.println("Current Live files ===>");
+                RocksDB.LiveFiles liveFiles = rocksDB.getLiveFiles();
+                liveFiles.files.forEach(System.out::println);
+
+                rocksDB.getLiveFilesMetaData().forEach(x -> {
+                    System.out.println("==>Column Family:"
+                            + x.columnFamilyName().toString()
+                            + "," + x.fileName()
+                            + "," + x.level()
+                    );
+                });
 
                 // 2. Method => Using Iterator
-                TransactionLogIterator txIter = rocksDB.getUpdatesSince(1);
+                TransactionLogIterator txIter = rocksDB.getUpdatesSince(1000);
                 if (txIter.isValid()) {
                     TransactionLogIterator.BatchResult result = txIter.getBatch();
                     WriteBatch batch = result.writeBatch();
@@ -37,6 +53,8 @@ public class RocksdbBasicOper {
                     System.out.println("Batch size:" + writeBatch.getDataSize() + ", " + writeBatch.count());
                     byte[] bytes = batch.data();
                     System.out.println("Huzx=>" + new String(bytes));
+                } else {
+                    System.out.println("Current TransactionLogIterator is Invalid");
                 }
                 // RocksIterator iter = rocksDB.newIterator();
                 // System.out.println("============Using Iterator===================");
