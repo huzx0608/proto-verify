@@ -2,8 +2,8 @@ package com.zetyun.rt.rocksdb;
 
 import org.rocksdb.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.nio.charset.StandardCharsets;
+
 
 public class RocksdbBasicOper {
 
@@ -14,56 +14,23 @@ public class RocksdbBasicOper {
     }
 
     public static void main(String[] args) throws Exception {
-        // db_path = args[0];
-        try(final Options options = new Options().setCreateIfMissing(true)) {
-            try (final RocksDB rocksDB = RocksDB.open(options, db_path)) {
+        try(final Options options = new Options().setCreateIfMissing(true).setInfoLogLevel(InfoLogLevel.DEBUG_LEVEL)) {
+            final RocksDB instance1 = RocksDB.open(options, db_path);
 
-                WriteBatch writeBatch = new WriteBatch();
-                for (Integer start = 0; start < 10; start++) {
-                    String strKey = start.toString();
-                    writeBatch.put(strKey.getBytes(), strKey.getBytes());
+            WriteBatch batch = new WriteBatch();
+            WriteOptions writeOption = new WriteOptions();
+            for (int i = 0; i < 100; i++) {
+                String key = String.format("%08d", i);
+                String val = String.format("%016d", i*1000);
+                batch.put(key.getBytes(StandardCharsets.UTF_8), val.getBytes(StandardCharsets.UTF_8));
+                if (i != 0 && i % 10 == 0) {
+                    instance1.write(writeOption, batch);
+                    instance1.flush(new FlushOptions());
+                    batch.clear();
                 }
-
-                Long currentTime = System.currentTimeMillis();
-                writeBatch.putLogData(currentTime.toString().getBytes());
-                rocksDB.write(new WriteOptions(), writeBatch);
-                System.out.println("Current Latest SequenceNo is:" + rocksDB.getLatestSequenceNumber());
-
-                /**
-                 * other metadata operation.
-                 */
-                System.out.println("Current Live files ===>");
-                RocksDB.LiveFiles liveFiles = rocksDB.getLiveFiles();
-                liveFiles.files.forEach(System.out::println);
-
-                rocksDB.getLiveFilesMetaData().forEach(x -> {
-                    System.out.println("==>Column Family:"
-                            + x.columnFamilyName().toString()
-                            + "," + x.fileName()
-                            + "," + x.level()
-                    );
-                });
-
-                // 2. Method => Using Iterator
-                TransactionLogIterator txIter = rocksDB.getUpdatesSince(1000);
-                if (txIter.isValid()) {
-                    TransactionLogIterator.BatchResult result = txIter.getBatch();
-                    WriteBatch batch = result.writeBatch();
-                    System.out.println("Batch size:" + batch.getDataSize() + ", " + batch.count());
-                    System.out.println("Batch size:" + writeBatch.getDataSize() + ", " + writeBatch.count());
-                    byte[] bytes = batch.data();
-                    System.out.println("Huzx=>" + new String(bytes));
-                } else {
-                    System.out.println("Current TransactionLogIterator is Invalid");
-                }
-                // RocksIterator iter = rocksDB.newIterator();
-                // System.out.println("============Using Iterator===================");
-                /*
-                for (iter.seekToFirst(); iter.isValid(); iter.next()) {
-                    System.out.println("Current Input Key :[" + new String(iter.key()) + "], Value[" + new String(iter.value()) + "]");
-                }
-                */
+                System.out.println(key+"|"+val);
             }
+            instance1.flush(new FlushOptions());
         }
     }
 }

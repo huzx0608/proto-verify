@@ -10,8 +10,10 @@
 
     <modules>
         <module>common</module>
+        <!--
         <module>coordinator</module>
         <module>executor</module>
+        -->
         <module>rocksdb-module</module>
         <module>examples</module>
     </modules>

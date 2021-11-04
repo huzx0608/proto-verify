@@ -4,6 +4,7 @@ import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.serialization.ByteArrayDeserializer;
 import org.rocksdb.*;
 
@@ -13,7 +14,7 @@ import java.util.Properties;
 
 public class KafkaConsumerExample {
 
-    private static String db_path = "./examples/data/rocksdb-data";
+    private static String db_path = "./data";
     static {
         RocksDB.loadLibrary();
     }
@@ -31,14 +32,20 @@ public class KafkaConsumerExample {
         KafkaConsumer<byte[], byte[]> consumer = new KafkaConsumer<byte[], byte[]>(properties);
         consumer.subscribe(Arrays.asList(topic));
 
+        TopicPartition topicPartition = new TopicPartition(topic, 0);
         final Options options = new Options().setCreateIfMissing(true);
         final RocksDB rocksDB = RocksDB.open(options, db_path);
 
         while (true) {
             ConsumerRecords<byte[], byte[]> records = consumer.poll(Duration.ofMillis(10000));
+            int index = 0;
+            System.out.println(records.count());
             for (ConsumerRecord<byte[], byte[]> record : records) {
+                index++;
                 CloudWalMeta meta = new CloudWalUtils().extractLogRecord(record.value());
-                System.out.println("xxxx=> Fetch meta is:" +  meta.toString());
+                long currentOffset = consumer.position(topicPartition) -1;
+                System.out.println("xxxx=>["  +  index + "] Topic Offset:["
+                        + currentOffset + "] WAL Meta is:" +  meta.toString());
                 WriteBatch batch = meta.getBatchRecord();
                 if (batch != null && batch.count() > 0) {
                     rocksDB.write(new WriteOptions(), batch);
