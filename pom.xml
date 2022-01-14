@@ -13,10 +13,11 @@
         <!--
         <module>coordinator</module>
         <module>executor</module>
-        <module>rocksdb-module</module>
         <module>examples</module>
         -->
         <module>netty-example</module>
+        <module>rocksdb-module</module>
+        <module>disruptor-module</module>
     </modules>
     <packaging>pom</packaging>
 
