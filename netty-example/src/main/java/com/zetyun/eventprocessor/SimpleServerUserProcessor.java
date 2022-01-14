@@ -25,7 +25,7 @@ public class SimpleServerUserProcessor extends SyncUserProcessor<RequestBody> {
 
     @Override
     public Object handleRequest(BizContext bizContext, RequestBody request) throws Exception {
-        System.out.println("Huzx==> Request received:" + request + ", timeout:" + bizContext.getClientTimeout()
+        System.out.println("Huzx============> Request received:" + request + ", timeout:" + bizContext.getClientTimeout()
                 + ", arriveTimestamp:" + bizContext.getArriveTimestamp());
         String response = "Index:" + request.getId() + ", Response[" + RequestBody.DEFAULT_SERVER_RETURN_STR + "]";
         return response;
