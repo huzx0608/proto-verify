@@ -18,6 +18,7 @@
         <module>netty-example</module>
         <module>rocksdb-module</module>
         <module>disruptor-module</module>
+        <module>calcite-module</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -90,6 +91,11 @@
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
                 <version>8.0.24</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.calcite</groupId>
+                <artifactId>calcite-core</artifactId>
+                <version>1.26.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
