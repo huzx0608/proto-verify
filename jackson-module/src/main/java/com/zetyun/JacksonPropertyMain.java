@@ -4,11 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.zetyun.modle.*;
 
-import java.io.IOException;
+import java.text.SimpleDateFormat;
 
 public class JacksonPropertyMain {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception{
         // case 1:
         ExtendableBean bean = new ExtendableBean("myBean");
         bean.add("key1", "value1");
@@ -39,6 +39,15 @@ public class JacksonPropertyMain {
         mapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
         String result5 = mapper.writeValueAsString(new UserWithRoot(1, "123456"));
         System.out.println(result5);
+        System.out.println("==============================");
+
+        // case 6:
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String toParse = "2020-10-10 10:10:10";
+        java.util.Date date = format.parse(toParse);
+        EventWithSerializer event = new EventWithSerializer("name", date);
+        String result6 = new ObjectMapper().writeValueAsString(event);
+        System.out.println(result6);
         System.out.println("==============================");
     }
 }

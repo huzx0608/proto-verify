@@ -1,6 +1,5 @@
 package com.zetyun.dingo.avo;
 
-import com.sun.xml.internal.bind.v2.runtime.output.SAXOutput;
 import jdk.nashorn.internal.codegen.types.Type;
 import org.apache.avro.*;
 import org.apache.avro.generic.GenericData;
