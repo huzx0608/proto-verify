@@ -10,15 +10,17 @@
 
     <modules>
         <module>common</module>
+        <module>netty-module</module>
+        <module>jackson-module</module>
         <!--
+        <module>netty-example</module>
         <module>coordinator</module>
         <module>executor</module>
         <module>examples</module>
-        -->
-        <module>netty-example</module>
         <module>rocksdb-module</module>
         <module>disruptor-module</module>
         <module>calcite-module</module>
+        -->
     </modules>
     <packaging>pom</packaging>
 
@@ -96,6 +98,31 @@
                 <groupId>org.apache.calcite</groupId>
                 <artifactId>calcite-core</artifactId>
                 <version>1.26.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.avro</groupId>
+                <artifactId>avro</artifactId>
+                <version>1.10.0</version>
+            </dependency>
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-all</artifactId>
+                <version>4.1.73.Final</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>2.13.2</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>2.13.2</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>2.13.2</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -4,8 +4,11 @@ import org.apache.calcite.adapter.java.ReflectiveSchema;
 import org.apache.calcite.plan.RelOptUtil;
 import org.apache.calcite.rel.RelNode;
 import org.apache.calcite.rel.RelRoot;
+import org.apache.calcite.rel.type.RelDataType;
+import org.apache.calcite.rel.type.RelDataTypeFactory;
 import org.apache.calcite.rel.type.RelDataTypeSystem;
 import org.apache.calcite.schema.SchemaPlus;
+import org.apache.calcite.schema.impl.AbstractTable;
 import org.apache.calcite.sql.SqlFunction;
 import org.apache.calcite.sql.SqlFunctionCategory;
 import org.apache.calcite.sql.SqlIdentifier;
@@ -14,6 +17,7 @@ import org.apache.calcite.sql.fun.SqlStdOperatorTable;
 import org.apache.calcite.sql.parser.SqlParser;
 import org.apache.calcite.sql.parser.SqlParserPos;
 import org.apache.calcite.sql.type.*;
+import org.apache.calcite.sql.validate.SqlConformanceEnum;
 import org.apache.calcite.tools.FrameworkConfig;
 import org.apache.calcite.tools.Frameworks;
 import org.apache.calcite.tools.Planner;
@@ -37,18 +41,24 @@ public class StringFuncDemo {
 //            SqlFunctionCategory.USER_DEFINED_FUNCTION
 //    );
 
+    public static final SqlTypeFactoryImpl TYPE_FACTORY = new SqlTypeFactoryImpl(
+            RelDataTypeSystem.DEFAULT);
+    public static final RelDataTypeSystem TYPE_SYSTEM = RelDataTypeSystem.DEFAULT;
+
     public static void main(String[] args) {
         SchemaPlus schemaPlus = Frameworks.createRootSchema(true);
 
         schemaPlus.add("T", new ReflectiveSchema(new TestSchema()));
+
         Frameworks.ConfigBuilder configBuilder = Frameworks.newConfigBuilder();
         configBuilder.defaultSchema(schemaPlus);
 
         FrameworkConfig frameworkConfig = configBuilder
-                        .operatorTable(SqlStdOperatorTable.instance())
+                        .operatorTable(DingoOperatorTable.instance())
                         .build();
         SqlParser.ConfigBuilder paresrCfg = SqlParser.configBuilder(frameworkConfig.getParserConfig());
         paresrCfg.setCaseSensitive(false).setConfig(paresrCfg.build());
+        paresrCfg.setConformance(SqlConformanceEnum.MYSQL_5);
         Planner planner = Frameworks.getPlanner(frameworkConfig);
 
         SqlNode sqlNode;
@@ -61,7 +71,7 @@ public class StringFuncDemo {
             // sqlNode = planner.parse("select \"a\".\"s\", count(\"a\".\"s\") from \"T\".\"rdf\" \"a\" group by \"a\".\"s\"");
             // sqlNode = planner.parse("select \"a\".\"s\" || \"a\".\"p\" from \"T\".\"rdf\" \"a\"");
             // sqlNode = planner.parse("SELECT CAST('123' AS INT)");
-            String sql = "select subString('caterpillar',6,4)";
+            String sql = "select reverse(' aaaababca')";
             sqlNode = planner.parse(sql);
             planner.validate(sqlNode);
             relRoot = planner.rel(sqlNode);
