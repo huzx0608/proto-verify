@@ -40,5 +40,41 @@ Wrapping means that instead of serializing a User to something like:
 
 @JsonSerialize indicates a custom serializer to use when marshalling the entity.
 
+### 2.1.2 Jackson Deserialization Annotations
+
+1. JsonCreator
+
+The @JsonCreator annotation is used to indicate a constructor that should be used to create an instance of the class.
+
+2. JacksonInject
+
+@JacksonInject indicates that a property will get its value from the injection and not from the JSON data.
+
+3. JsonAnySetter
+
+@JsonAnySetter allows us the flexibility of using a Map as standard properties. On deserialization, the properties from JSON will simply be added to the map.
+
+4. JsonSetter
+
+@JsonSetter is an alternative to @JsonProperty that marks the method as a setter method.
+
+This is incredibly useful when we need to read some JSON data, but the target entity class doesn't exactly match that data, and so we need to tune the process to make it fit.
+
+5. JsonDeserialize
+
+@JsonDeserialize indicates the use of a custom deserializer.
+
+6. JsonAlias
+
+The @JsonAlias defines one or more alternative names for a property during deserialization.
+
+## 2.2 Jackson Polymorphic Type Handling Annotations
+
+Next let's take a look at Jackson polymorphic type handling annotations:
+- @JsonTypeInfo – indicates details of what type information to include in serialization
+- @JsonSubTypes – indicates sub-types of the annotated type
+- @JsonTypeName – defines a logical type name to use for annotated class
+
+
 
 

@@ -1,4 +1,4 @@
-package com.zetyun.modle;
+package com.zetyun.modle.ser;
 
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonGenerator;

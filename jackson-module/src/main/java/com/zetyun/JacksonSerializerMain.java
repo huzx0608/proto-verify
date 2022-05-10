@@ -2,11 +2,16 @@ package com.zetyun;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.zetyun.modle.*;
+import com.zetyun.modle.ser.EventWithSerializer;
+import com.zetyun.modle.ser.ExtendableBean;
+import com.zetyun.modle.ser.MyBean;
+import com.zetyun.modle.ser.RawBean;
+import com.zetyun.modle.ser.TypeEnumWithValue;
+import com.zetyun.modle.ser.UserWithRoot;
 
 import java.text.SimpleDateFormat;
 
-public class JacksonPropertyMain {
+public class JacksonSerializerMain {
 
     public static void main(String[] args) throws Exception{
         // case 1:
