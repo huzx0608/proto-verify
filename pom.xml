@@ -16,6 +16,7 @@
         <module>examples</module>
         -->
         <module>netty-module</module>
+        <module>protostuff-module</module>
         <module>jackson-module</module>
         <module>netty-example</module>
         <module>rocksdb-module</module>
@@ -39,6 +40,7 @@
         <lombok.version>1.18.18</lombok.version>
         <helix.version>1.0.1</helix.version>
         <commons.jci.version>1.0</commons.jci.version>
+        <protostuff.version>1.8.0</protostuff.version>
     </properties>
 
     <dependencyManagement>
@@ -72,6 +74,16 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-jci-fam</artifactId>
                 <version>${commons.jci.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.protostuff</groupId>
+                <artifactId>protostuff-core</artifactId>
+                <version>${protostuff.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.protostuff</groupId>
+                <artifactId>protostuff-runtime</artifactId>
+                <version>${protostuff.version}</version>
             </dependency>
             <!-- log4j2 related dependencies -->
             <dependency>
