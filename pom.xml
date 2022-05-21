@@ -22,6 +22,7 @@
         <module>rocksdb-module</module>
         <module>disruptor-module</module>
         <module>calcite-module</module>
+        <module>aerospike-module</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -135,6 +136,11 @@
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
                 <version>2.13.2</version>
+            </dependency>
+            <dependency>
+                <groupId>com.aerospike</groupId>
+                <artifactId>aerospike-client</artifactId>
+                <version>4.4.20</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
