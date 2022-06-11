@@ -15,6 +15,7 @@
         <module>executor</module>
         <module>examples</module>
         -->
+        <module>basic-struct-module</module>
         <module>netty-module</module>
         <module>protostuff-module</module>
         <module>jackson-module</module>
