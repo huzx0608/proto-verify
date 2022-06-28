@@ -1,6 +1,6 @@
 package com.coding;
 
-import com.coding.module.Person;
+import com.coding.model.Person;
 import org.apache.juneau.json.JsonParser;
 import org.apache.juneau.json.JsonSerializer;
 import org.apache.juneau.json.SimpleJsonSerializer;
@@ -8,9 +8,6 @@ import org.apache.juneau.parser.ParseException;
 import org.apache.juneau.parser.ReaderParser;
 import org.apache.juneau.serializer.SerializeException;
 
-import java.sql.Date;
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;

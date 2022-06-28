@@ -10,7 +10,6 @@
     </parent>
     <artifactId>netty-example</artifactId>
     <modelVersion>4.0.0</modelVersion>
-    <name>Netty Example Using Bolt of Alibaba</name>
 
     <dependencies>
         <dependency>
