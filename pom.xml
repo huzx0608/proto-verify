@@ -27,6 +27,7 @@
         <module>expression-module</module>
         <module>marshall-module</module>
         <module>document-module</module>
+        <module>mockito-module</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -48,6 +49,7 @@
         <protostuff.version>1.8.0</protostuff.version>
         <juneau.version>8.2.0</juneau.version>
         <avro.version>1.10.0</avro.version>
+
     </properties>
 
     <dependencyManagement>
@@ -96,6 +98,11 @@
                 <groupId>io.protostuff</groupId>
                 <artifactId>protostuff-runtime</artifactId>
                 <version>${protostuff.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>4.2.0</version>
             </dependency>
             <!-- log4j2 related dependencies -->
             <dependency>
