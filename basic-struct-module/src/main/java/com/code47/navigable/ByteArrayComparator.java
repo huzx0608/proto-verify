@@ -1,4 +1,4 @@
-package com.code.navigable;
+package com.code47.navigable;
 
 public class ByteArrayComparator {
     public static int compare(byte[] bytes1, byte[] bytes2) {
