@@ -1,4 +1,4 @@
-package com.code47.singleton.impl;
+package com.code47.singlethreadexecution.impl;
 
 public class SingletonCase1 {
     public static void main(String[] args) {
