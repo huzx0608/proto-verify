@@ -1,9 +1,6 @@
 package com.code47.producer.comsumer;
 
 import java.util.Random;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingDeque;
-import java.util.concurrent.BlockingQueue;
 
 public class Consumer extends Thread {
     private final String name;
