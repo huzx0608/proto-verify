@@ -2,9 +2,9 @@ package com.code47.readwrite;
 
 
 public class ReaderThread extends Thread {
-    private final Data buffer;
+    private final NData buffer;
 
-    public ReaderThread(Data buffer) {
+    public ReaderThread(NData buffer) {
         this.buffer = buffer;
     }
 

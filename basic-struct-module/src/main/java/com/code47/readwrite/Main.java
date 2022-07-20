@@ -2,7 +2,7 @@ package com.code47.readwrite;
 
 public class Main {
     public static void main(String[] args) {
-        Data data = new Data(10);
+        NData data = new NData(10);
         new ReaderThread(data).start();
         new ReaderThread(data).start();
         new ReaderThread(data).start();

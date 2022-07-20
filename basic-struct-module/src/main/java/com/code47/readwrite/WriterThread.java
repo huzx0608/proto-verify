@@ -3,12 +3,12 @@ package com.code47.readwrite;
 import java.util.Random;
 
 public class WriterThread extends Thread {
-    private final Data buffer;
+    private final NData buffer;
     private final String loopStr;
     private static final Random random = new Random();
     private int index;
 
-    public WriterThread(Data buffer, String loopStr) {
+    public WriterThread(NData buffer, String loopStr) {
         this.buffer = buffer;
         this.loopStr = loopStr;
         index = 0;
